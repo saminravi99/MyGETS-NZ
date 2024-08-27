@@ -1,0 +1,34 @@
+name: Production CI/CD
+
+on:
+  push:
+    branches:
+      - production
+
+jobs:
+  build-and-deploy-production:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18
+          
+      - name: Install dependencies
+        run: npm install
+        
+      - name: Build Next.js app
+        run: npm run build
+        
+    #   - name: Run unit tests
+    #     run: npm run test
+        
+      - name: Run security scans
+        run: npm audit --audit-level=high
+        
+    #   - name: Deploy to production
+    #     run: npm run deploy:production
